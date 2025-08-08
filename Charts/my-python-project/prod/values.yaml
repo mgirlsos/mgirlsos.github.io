@@ -1,0 +1,24 @@
+# Default values for epro-admin-service.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+generic-micro-service:
+  image:
+    repository: docker.io/lixshen/lisa-py-project
+    tag: "development-20250428.1"
+  replicaCount: 2
+  # define configMap details
+  configMap:
+    name: lisa-py-project-configmap
+    data:
+      SPRING_PROFILES_ACTIVE: prod
+      APPLICATIONINSIGHTS_CONNECTION_STRING: InstrumentationKey=ece9e0e5-b2be-482a-b4da-df4eccd58763
+      # define volume and Mounts variables for deployment
+  volumes:
+    name: test
+    driver: "azure/kv"
+    keyvaultname: "lisa-py-project-vault-prod"
+  volumeMounts:
+    - name: test
+      mountPath: /secrets
+      readOnly: true
