@@ -62,6 +62,7 @@ jobs:
     #         -T ./charts/${HELM_CHART_NAME}-${HELM_CHART_VERSION}.tgz \
     #         "${JFROG_REPO_URL}"
       
+      
       - name: Prepare GitHub Pages content (exclude certain directory)
         run: |
           cp -f ./my-helm-charts/index public/my-helm-charts/
@@ -72,7 +73,7 @@ jobs:
           github_token: ${{ secrets.GH_TOKEN }}
           publish_dir: ./public
           publish_branch: gh-pages
-        
+          keep_files: true
       - name: Show Helm Chart Info
         run: |
           helm show chart $JFROG_REPO_NAME/$HELM_CHART_NAME --version $HELM_CHART_VERSION
