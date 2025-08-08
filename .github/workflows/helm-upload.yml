@@ -15,9 +15,7 @@ on:
       HELM_CHART_VERSION:
         description: ' HELM_CHART_VERSION'
         required: true
-        type: choice
-        options:
-          - 1.1.9
+        type: string
         default: 1.1.9
     
 
@@ -75,6 +73,7 @@ jobs:
           github_token: ${{ secrets.GH_TOKEN }}
           publish_dir: ./public
           publish_branch: gh-pages
+        
       - name: Show Helm Chart Info
         run: |
           helm show chart $JFROG_REPO_NAME/$HELM_CHART_NAME --version $HELM_CHART_VERSION
