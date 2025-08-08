@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "generic-micro-service.fullname" . }}
+  labels:
+    {{- include "generic-micro-service.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "generic-micro-service.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "generic-micro-service.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ include "generic-micro-service.fullname" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+          - containerPort: {{ .Values.service.targetPort }}
+            protocol: TCP
+          #{{- if .Values.livenessProbe }}
+          #livenessProbe:
+            #{{- toYaml .Values.livenessProbe | nindent 12 }}
+          #{{- else }}
+          #livenessProbe:
+            #httpGet:
+              #path: /
+              #port: http
+          ##{{- end }}
+          {{- if .Values.readinessProbe }}
+          #readinessProbe:
+            #{{- toYaml .Values.readinessProbe | nindent 12 }}
+          #{{- else }}
+          #readinessProbe:
+            #httpGet:
+              #path: /
+              #port: http
+          #{{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml .Values.volumeMounts | nindent 12 }}
+          {{- end }}
+          env:
+            {{- toYaml .Values.env | nindent 14 }}
+      {{- if .Values.volumes }}
+      volumes:
+         {{- if .Values.volumes.driver }}
+         - name: {{.Values.volumes.name }}
+           flexVolume:
+             driver: "{{ .Values.volumes.driver }}"
+             secretRef:
+               name: kvcreds
+             options:
+               keyvaultname: "{{ .Values.volumes.keyvaultname }}"
+               keyvaultobjectaliases: "{{ .Values.volumes.keyvaultobjectaliases }}"
+               keyvaultobjectnames: "{{ .Values.volumes.keyvaultobjectnames }}"
+               keyvaultobjecttypes: "{{ .Values.volumes.keyvaultobjecttypes }}"
+               nmiport: "nmiportnumber"
+               tenantid:  "{{ .Values.volumes.tenantid }}"
+               usepodidentity: "false"
+               usevmmanagedidentity: "false"
+               vmmanagedidentityclientid: clientid
+        {{- else }}
+         {{- toYaml .Values.volumes | nindent 12 }}
+        {{- end }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "generic-micro-service.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

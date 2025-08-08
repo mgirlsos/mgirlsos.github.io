@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "generic-micro-service.fullname" . }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "generic-micro-service.labels" . | nindent 4 }}
+spec:
+  ports:
+  - name: http
+    port: {{ .Values.service.port }}
+    targetPort: {{ .Values.service.targetPort }}
+    protocol: TCP
+  type: {{ .Values.service.type }}
+  selector:
+    {{- include "generic-micro-service.selectorLabels" . | nindent 4 }}

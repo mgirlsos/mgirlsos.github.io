@@ -52,11 +52,11 @@ jobs:
 
       - name: Package Helm chart (with dependencies)
         run: |
-          helm dependency update ./${{ inputs.HELM_CHART_NAME }}
-          helm package ./${{ inputs.HELM_CHART_NAME }} \
+          helm dependency update ./my-helm-charts/${{ inputs.HELM_CHART_NAME }}
+          helm package ./my-helm-charts/${{ inputs.HELM_CHART_NAME }} \
             --version ${{ inputs.HELM_CHART_VERSION }} \
             --destination ./charts
-          helm repo index . --url ${JFROG_REPO_URL}
+          helm repo index ./my-helm-charts/ --url ${JFROG_REPO_URL}
 
     #   - name: Upload Helm Chart to JFrog
     #     run: |
