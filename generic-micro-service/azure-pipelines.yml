@@ -1,0 +1,79 @@
+variables:
+- group: jfrog_token
+- name: jfrogrepoName
+  value: w00014-internal-us-digital-devops-helm
+- name: jfrogrepoUrl
+  value: 'https://artifacts-west.internal.com:443/artifactory/${{variables.jfrogrepoName}}/'
+- name: helmchartVersion
+  value: 1.1.9
+- name: helmchartName
+  value: generic-micro-service
+
+#parameters:
+#- name: serviceConnection
+  #displayName: serviceConnection
+  #type: string
+  #default: SUB034-spn
+#- name: aksResourceGroup
+  #displayName: aksResourceGroup
+  #type: string
+  #default: PZI-GXUS-N-RGP-MSHTR-D001
+#- name: aksClusterName
+  #displayName: aksClusterName
+  #type: string
+  #default: ADVDGLDODEUSAKSDEV005
+
+trigger:
+  branches:
+    include:
+    - master
+
+pool:
+  name: 'dds-concourse-ubuntu2004-01'
+  workspace:
+    clean: all
+
+steps:
+# Helm tool installer
+# Install Helm on an agent machine
+  - task: HelmInstaller@1
+    inputs:
+      helmVersionToInstall: 'latest' # Optional
+     
+# Add helm chart museum  
+  - task: HelmDeploy@0
+    displayName: 'Add Helm Repo'
+    enabled: true
+    inputs:
+      connectionType: 'None'
+      #connectionType: 'Azure Resource Manager'
+      #azureSubscription: ${{ parameters.serviceConnection }}
+      #azureResourceGroup: ${{ parameters.aksResourceGroup }}
+      #kubernetesCluster: ${{ parameters.aksClusterName }}
+      command: 'repo'
+      arguments: 'add --username $(jfrog_username) --password $(jfrog_token) ${{ variables.jfrogrepoName }} ${{ variables.jfrogrepoUrl }}'
+
+# Package Helm chart
+  - task: HelmDeploy@0
+    displayName: Helm package
+    inputs:
+      command: package
+      updatedependency: true  #'Add Helm repo before enable download chart dependency'
+      chartPath: ./generic-micro-service
+      destination: $(Build.ArtifactStagingDirectory)
+      chartVersion: ${{ variables.helmchartVersion }}
+      #arguments: 
+
+# Upload helm chart to Jfrog chart museum
+  - task: Bash@3
+    displayName: Helm upload to Jfrog
+    inputs:
+      targetType: 'inline'
+      script: curl -H "Authorization:Bearer $(jfrog_token)" -T $(Build.ArtifactStagingDirectory)/${{ variables.helmchartName}}-${{ variables.helmchartVersion }}.tgz "${{ variables.jfrogrepoUrl}}"
+
+# Show chart information
+  - task: helm@1
+    displayName: Get ${{variables.helmchartName}} info
+    inputs:
+      subCommand: 'show'
+      arguments: 'chart ${{variables.jfrogrepoName}}/${{variables.helmchartName}}'
