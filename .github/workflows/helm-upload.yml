@@ -64,11 +64,16 @@ jobs:
     #         -T ./charts/${HELM_CHART_NAME}-${HELM_CHART_VERSION}.tgz \
     #         "${JFROG_REPO_URL}"
       
+      - name: Prepare GitHub Pages content (exclude certain directory)
+        run: |
+          mkdir public
+          rsync -av --progress . public --exclude Charts --exclude .git --exclude public
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GH_TOKEN }}
-          publish_dir: .
+          publish_dir: ./public
           publish_branch: gh-pages
       - name: Show Helm Chart Info
         run: |
