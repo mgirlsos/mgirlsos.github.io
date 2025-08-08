@@ -67,7 +67,7 @@ jobs:
       - name: Prepare GitHub Pages content (exclude certain directory)
         run: |
           mkdir public
-          rsync -av --progress . public --exclude Charts --exclude .git --exclude public
+          rsync -av --progress . public --exclude Charts --exclude mgmt --exclude .git --exclude public
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
