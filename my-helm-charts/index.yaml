@@ -3,17 +3,17 @@ entries:
   generic-micro-service:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-08-08T14:58:39.382515626Z"
+    created: "2025-08-08T15:01:18.878931551Z"
     description: A Helm chart for Kubernetes
-    digest: 1906315a061623d7124893769a4d8157c59ded3a0ac3504381884cc05711ed5f
+    digest: 895b575060759d2fff03842beab26b99150dbd76a8b4068b21e4513ee926bcd4
     name: generic-micro-service
     type: application
     urls:
-    - https://mgirlsos.github.io/my-helm-charts/generic-micro-service-1.1.11.tgz
-    version: 1.1.11
+    - https://mgirlsos.github.io/my-helm-charts/generic-micro-service-1.1.12.tgz
+    version: 1.1.12
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-08-08T14:58:39.382085425Z"
+    created: "2025-08-08T15:01:18.878500547Z"
     description: A Helm chart for Kubernetes
     digest: 62864b563dbdda89a1d6275068ebe493d052296bc1669af68920a72ed79f6bb0
     name: generic-micro-service
@@ -21,4 +21,4 @@ entries:
     urls:
     - https://mgirlsos.github.io/my-helm-charts/generic-micro-service-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-08T14:58:39.381604809Z"
+generated: "2025-08-08T15:01:18.877975027Z"
