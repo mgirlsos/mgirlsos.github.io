@@ -55,7 +55,7 @@ jobs:
           helm dependency update ./my-helm-charts/${{ inputs.HELM_CHART_NAME }}
           helm package ./my-helm-charts/${{ inputs.HELM_CHART_NAME }} \
             --version ${{ inputs.HELM_CHART_VERSION }} \
-            --destination ./charts
+            --destination .
           helm repo index ./my-helm-charts/ --url ${JFROG_REPO_URL}
 
     #   - name: Upload Helm Chart to JFrog
@@ -69,7 +69,7 @@ jobs:
         with:
           github_token: ${{ secrets.GH_TOKEN }}
           publish_dir: .
-          publish_branch: main
+          publish_branch: gh-pages
       - name: Show Helm Chart Info
         run: |
           helm show chart $JFROG_REPO_NAME/$HELM_CHART_NAME --version $HELM_CHART_VERSION
