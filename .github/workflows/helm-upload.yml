@@ -68,8 +68,8 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GH_TOKEN }}
-          publish_dir: .
-          publish_branch: gh-pages
+          publish_dir: ./my-helm-charts/
+          publish_branch: main
       - name: Show Helm Chart Info
         run: |
           helm show chart $JFROG_REPO_NAME/$HELM_CHART_NAME --version $HELM_CHART_VERSION
