@@ -1,0 +1,39 @@
+name: Update Digital Registry Secret
+
+on:
+  workflow_dispatch: # Allows manual triggering of the workflow
+  push:
+    branches:
+      - main
+
+jobs:
+  update-secret:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.30.0' # Specify the version of kubectl you need
+
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${KUBECONFIG_CONTENT}" > ~/.kube/config
+        env:
+          KUBECONFIG_CONTENT: ${{ secrets.KUBECONFIG_CONTENT }}
+
+      - name: Create or update digital-registry-secret
+        run: |
+          kubectl create secret docker-registry digital-registry-secret \
+            --docker-server="docker.io" \
+            --docker-username="${{ secrets.JFROG_USERNAME }}" \
+            --docker-password="${{ secrets.JFROG_TOKEN }}" \
+            --docker-email="lisa_shen18@163.com" \
+            --namespace argocd \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Verify secret
+        run: kubectl get secret digital-registry-secret -o yaml

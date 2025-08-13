@@ -18,10 +18,11 @@ image:
 imagePullSecrets:
   create: true
   name: digital-registry-secret
-  registry: ""   # Your container image registry address
+  registry: ""   # 你的镜像仓库地址
   username: ""        # Injected via --set in GitHub Actions
   password: ""        # Injected via --set in GitHub Actions
-  email: ""     # Injected via --set in GitHub Actions
+  email: ""     # GitHub Actions 通过 --set 注入
+
 
 serviceAccount:
   create: false
