@@ -1,5 +1,5 @@
 apiVersion: v2
-name: generic-micro-service
+name: {{ .Values.releaseOverride | default .Release.Name }}
 description: A Helm chart for Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
