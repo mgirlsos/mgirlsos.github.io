@@ -2,7 +2,11 @@
 Expand the name of the chart.
 */}}
 {{- define "generic-micro-service.name" -}}
-{{- default .Values.nameOverride .Chart.Name  | trunc 63 | trimSuffix "-" }}
+{{- if .Values.appName }}
+{{- .Values.appName | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- default .Values.nameOverride .Chart.Name | trunc 63 | trimSuffix "-" }}
+{{- end }}
 {{- end }}
 
 {{/*
@@ -11,7 +15,9 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 If release name contains chart name it will be used as a full name.
 */}}
 {{- define "generic-micro-service.fullname" -}}
-{{- if .Values.fullnameOverride }}
+{{- if .Values.appName }}
+{{- .Values.appName | trunc 63 | trimSuffix "-" }}
+{{- else if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
 {{- $name := default .Chart.Name .Values.nameOverride }}
@@ -27,7 +33,11 @@ If release name contains chart name it will be used as a full name.
 Create chart name and version as used by the chart label.
 */}}
 {{- define "generic-micro-service.chart" -}}
+{{- if .Values.appName }}
+{{- .Values.appName | trunc 63 | trimSuffix "-" }}
+{{- else }}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- end }}
 {{- end }}
 
 {{/*
@@ -47,9 +57,9 @@ Selector labels
 */}}
 {{- define "generic-micro-service.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "generic-micro-service.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-apps: {{ .Release.Name }}
-k8s-app: {{ .Release.Name }}
+app.kubernetes.io/instance: {{ if .Values.appName }}{{ .Values.appName }}{{ else }}{{ .Release.Name }}{{ end }}
+apps: {{ if .Values.appName }}{{ .Values.appName }}{{ else }}{{ .Release.Name }}{{ end }}
+k8s-app: {{ if .Values.appName }}{{ .Values.appName }}{{ else }}{{ .Release.Name }}{{ end }}
 {{- end }}
 
 {{/*

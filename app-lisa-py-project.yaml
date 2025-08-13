@@ -1,0 +1,150 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: "2025-08-13T08:13:10Z"
+  generation: 28
+  name: lisa-py-project
+  namespace: argocd
+  resourceVersion: "223859"
+  uid: c77c29af-0153-4be8-8e8e-f4212f7c5c3d
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      releaseName: lisa-py-project
+      parameters:
+        - name: appName
+          value: lisa-py-project  # 传给 Helm
+      valueFiles:
+      - dev/values.yaml
+    path: Charts/lisa-py-project
+    repoURL: https://github.com/mgirlsos/mgirlsos.github.io.git
+    targetRevision: HEAD
+
+  syncPolicy:
+    automated: {}
+    syncOptions:
+    - Replace=true
+status:
+  conditions:
+  - lastTransitionTime: "2025-08-13T08:18:23Z"
+    message: 'Failed sync attempt to b4e30769a32071671a02b5575fa66909a235c1de: one
+      or more objects failed to apply, reason: Deployment in version "v1" cannot be
+      handled as a Deployment: json: cannot unmarshal object into Go struct field
+      Container.spec.template.spec.containers.env of type []v1.EnvVar (retried 5 times).'
+    type: SyncError
+  controllerNamespace: argocd
+  health:
+    lastTransitionTime: "2025-08-13T08:13:27Z"
+    status: Degraded
+  operationState:
+    finishedAt: "2025-08-13T08:18:22Z"
+    message: 'one or more objects failed to apply, reason: Deployment in version "v1"
+      cannot be handled as a Deployment: json: cannot unmarshal object into Go struct
+      field Container.spec.template.spec.containers.env of type []v1.EnvVar (retried
+      5 times).'
+    operation:
+      initiatedBy:
+        automated: true
+      retry:
+        limit: 5
+      sync:
+        revision: b4e30769a32071671a02b5575fa66909a235c1de
+        syncOptions:
+        - Replace=true
+    phase: Failed
+    retryCount: 5
+    startedAt: "2025-08-13T08:13:11Z"
+    syncResult:
+      resources:
+      - group: ""
+        hookPhase: Running
+        kind: ConfigMap
+        message: configmap/generic-micro-service-configmap replaced
+        name: generic-micro-service-configmap
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: ""
+        hookPhase: Running
+        kind: Service
+        message: service/generic-micro-service replaced
+        name: generic-micro-service
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: apps
+        hookPhase: Failed
+        kind: Deployment
+        message: 'Deployment in version "v1" cannot be handled as a Deployment: json:
+          cannot unmarshal object into Go struct field Container.spec.template.spec.containers.env
+          of type []v1.EnvVar'
+        name: generic-micro-service
+        namespace: default
+        status: SyncFailed
+        syncPhase: Sync
+        version: v1
+      - group: autoscaling
+        hookPhase: Running
+        kind: HorizontalPodAutoscaler
+        message: horizontalpodautoscaler.autoscaling/generic-micro-service replaced
+        name: generic-micro-service
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v2
+      revision: b4e30769a32071671a02b5575fa66909a235c1de
+      source:
+        helm:
+          valueFiles:
+          - dev/values.yaml
+        path: Charts/lisa-py-project
+        repoURL: https://github.com/mgirlsos/mgirlsos.github.io.git
+        targetRevision: HEAD
+  reconciledAt: "2025-08-13T08:21:04Z"
+  resourceHealthSource: appTree
+  resources:
+  - kind: ConfigMap
+    name: generic-micro-service-configmap
+    namespace: default
+    status: Synced
+    version: v1
+  - kind: Service
+    name: generic-micro-service
+    namespace: default
+    status: Synced
+    version: v1
+  - group: apps
+    kind: Deployment
+    name: generic-micro-service
+    namespace: default
+    status: OutOfSync
+    version: v1
+  - group: autoscaling
+    kind: HorizontalPodAutoscaler
+    name: generic-micro-service
+    namespace: default
+    status: Synced
+    version: v2
+  sourceHydrator: {}
+  sourceType: Helm
+  summary: {}
+  sync:
+    comparedTo:
+      destination:
+        namespace: default
+        server: https://kubernetes.default.svc
+      source:
+        helm:
+          valueFiles:
+          - dev/values.yaml
+        path: Charts/lisa-py-project
+        repoURL: https://github.com/mgirlsos/mgirlsos.github.io.git
+        targetRevision: HEAD
+    revision: b4e30769a32071671a02b5575fa66909a235c1de
+    status: OutOfSync

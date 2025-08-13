@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 
 
-fullnameOverride: ""
-nameOverride: ""
+fullnameOverride: "generic-micro-service"
+nameOverride: "generic-micro-service"
 
 replicaCount: 1
 
