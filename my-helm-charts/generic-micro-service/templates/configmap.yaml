@@ -1,8 +1,11 @@
-kind: ConfigMap 
-apiVersion: v1 
+kind: ConfigMap
+apiVersion: v1
 metadata:
   name: {{ include "generic-micro-service.fullname" . }}-configmap
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "generic-micro-service.labels" . | nindent 4 }}
 data:
-  {{- toYaml .Values.configMap.data | nindent 2 }}
+  {{- with .Values.configMap.data }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "generic-micro-service.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "generic-micro-service.labels" . | nindent 4 }}
 spec:
@@ -14,7 +15,7 @@ spec:
   template:
     metadata:
       {{- with .Values.podAnnotations }}
-      annotations:
+      annotations:  
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
@@ -36,7 +37,7 @@ spec:
               #path: /
               #port: http
           ##{{- end }}
-          {{- if .Values.readinessProbe }}
+          #{{- if .Values.readinessProbe }}
           #readinessProbe:
             #{{- toYaml .Values.readinessProbe | nindent 12 }}
           #{{- else }}

@@ -12,21 +12,25 @@ spec:
     name: {{ include "generic-micro-service.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  {{- $cpu := .Values.autoscaling.targetCPUUtilizationPercentage }}
+  {{- $mem := .Values.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- if or $cpu $mem }}
   metrics:
-    {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
+    {{- if $cpu }}
     - type: Resource
       resource:
         name: cpu
         target:
-          averageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
           type: Utilization
+          averageUtilization: {{ $cpu }}
     {{- end }}
-    {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- if $mem }}
     - type: Resource
       resource:
         name: memory
         target:
-          averageUtilization: {{ .Values.autoscaling.targetMemoryUtilizationPercentage }}
           type: Utilization
+          averageUtilization: {{ $mem }}
     {{- end }}
+  {{- end }}
 {{- end }}

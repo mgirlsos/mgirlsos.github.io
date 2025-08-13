@@ -9,11 +9,11 @@ metadata:
   labels:
     {{- include "generic-micro-service.labels" . | nindent 4 }}
 spec:
-  ports:
-  - name: http
-    port: {{ .Values.service.port }}
-    targetPort: {{ .Values.service.targetPort }}
-    protocol: TCP
-  type: {{ .Values.service.type }}
+  type: {{ default "ClusterIP" .Values.service.type }}
   selector:
     {{- include "generic-micro-service.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port | int }}
+      targetPort: {{ .Values.service.targetPort | int }}
+      protocol: TCP
