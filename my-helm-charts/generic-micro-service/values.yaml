@@ -16,7 +16,12 @@ image:
   tag: "1.0.1"
 
 imagePullSecrets:
-  - name: digital-registry-secret
+  create: true
+  name: digital-registry-secret
+  registry: ""   # Your container image registry address
+  username: ""        # Injected via --set in GitHub Actions
+  password: ""        # Injected via --set in GitHub Actions
+  email: ""     # Injected via --set in GitHub Actions
 
 serviceAccount:
   create: false

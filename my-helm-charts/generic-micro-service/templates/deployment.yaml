@@ -97,7 +97,7 @@ spec:
 
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
+        - name: {{ .Values.imagePullSecrets.name }}
       {{- end }}
       serviceAccountName: {{ include "generic-micro-service.serviceAccountName" . }}
       securityContext:
