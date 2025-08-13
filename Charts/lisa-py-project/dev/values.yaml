@@ -1,7 +1,7 @@
 # Default values for epro-admin-service.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
+appName: lisa-py-project
 generic-micro-service:
   image:
     repository: docker.io/lixshen/lisa-py-project
