@@ -4,7 +4,7 @@
 generic-micro-service:
   image:
     repository: docker.io/lixshen/lisa-py-project
-    tag: "dc9153d"
+    tag: "6480c5b"
   replicaCount: 1
   service:
     type: ClusterIP
