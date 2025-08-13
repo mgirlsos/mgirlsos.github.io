@@ -6,6 +6,7 @@
 #fullnameOverride: "generic-micro-service"
 #nameOverride: "generic-micro-service"
 
+appName: "generic-micro-service"
 replicaCount: 1
 
 image:
