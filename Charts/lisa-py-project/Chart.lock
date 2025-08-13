@@ -1,6 +1,0 @@
-dependencies:
-- name: generic-micro-service
-  repository: https://mgirlsos.github.io/my-helm-charts
-  version: 1.1.16
-digest: sha256:476636dfe792fb2269ccaf5122b4006deba955c3bbd45792acf0290a96100558
-generated: "2025-08-13T18:08:20.374161+08:00"

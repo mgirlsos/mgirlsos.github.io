@@ -52,8 +52,13 @@ spec:
           volumeMounts:
             {{- toYaml .Values.volumeMounts | nindent 12 }}
           {{- end }}
+          {{- if .Values.generic-micro-service.configMap.data }}
           env:
-            {{- toYaml .Values.env | nindent 14 }}
+            {{- range $key, $value := .Values.generic-micro-service.configMap.data }}
+                - name: {{ $key }}
+                  value: {{ $value | quote }}
+            {{- end }}
+            {{- end }}
       {{- if .Values.volumes }}
       volumes:
          {{- if .Values.volumes.driver }}
