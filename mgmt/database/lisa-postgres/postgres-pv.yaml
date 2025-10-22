@@ -12,7 +12,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: "/mnt/data"
+    path: "/Users/lisashen/Documents/database/lisa-postgres"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
