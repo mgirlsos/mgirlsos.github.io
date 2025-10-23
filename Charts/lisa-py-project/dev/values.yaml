@@ -9,7 +9,7 @@ generic-micro-service:
   service:
     type: ClusterIP
     port: 8080
-    targetPort: 8080
+    targetPort: 8000
   # define configMap details
   configMap:
     name: lisa-py-project-configmap
