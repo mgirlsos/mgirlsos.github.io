@@ -4,7 +4,7 @@
 generic-micro-service:
   image:
     repository: docker.io/lixshen/lisa-py-project
-    tag: "ad3c200"
+    tag: "5003753"
   replicaCount: 1
   service:
     type: LoadBalancer
