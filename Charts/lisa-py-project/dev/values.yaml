@@ -7,7 +7,7 @@ generic-micro-service:
     tag: "ad3c200"
   replicaCount: 1
   service:
-    type: ClusterIP
+    type: LoadBalancer
     port: 8080
     targetPort: 8000
   # define configMap details
