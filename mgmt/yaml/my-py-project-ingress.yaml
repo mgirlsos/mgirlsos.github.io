@@ -5,7 +5,6 @@ metadata:
   name: my-py-project-ingress
   namespace: default
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
