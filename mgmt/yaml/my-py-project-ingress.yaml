@@ -17,4 +17,4 @@ spec:
               service:
                 name: my-py-project
                 port:
-                  number: 8080
+                  number: 80
